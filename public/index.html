@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>虚拟人客服 · 播报与语音识别</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="page-bg" id="page-bg" data-scene="tech" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <h1>虚拟人客服</h1>
+      <p class="tagline">播报 + 语音识别 · 形象透明叠加在页面背景上</p>
+    </header>
+
+    <main class="layout">
+      <section class="stage" id="avatar-stage" aria-label="虚拟人画面">
+        <div id="avatar-wrapper" class="avatar-wrapper"></div>
+      </section>
+
+      <aside class="panel">
+        <p id="status" class="status" role="status">未连接</p>
+        <p id="hint" class="hint">请先点击「启动」。开发请使用 localhost；生产需 HTTPS 才能录音。</p>
+
+        <section class="action-panel" aria-label="场景背景">
+          <h2>场景背景</h2>
+          <p class="hint">随时切换，无需重新启动。用来看透明叠加在不同场景下的边缘。</p>
+          <div id="bg-switch" class="actions bg-switch">
+            <button type="button" data-scene="tech" class="is-active">科技蓝</button>
+            <button type="button" data-scene="lobby">暖色大厅</button>
+            <button type="button" data-scene="daylight">明亮窗边</button>
+          </div>
+        </section>
+
+        <section class="action-panel" aria-label="形象位置">
+          <h2>形象位置</h2>
+          <p class="hint">出画后会从底部小图移到中间并放大。也可拖动形象，或用按钮缩放、移动。</p>
+          <div class="actions">
+            <button type="button" id="btn-zoom-in">放大</button>
+            <button type="button" id="btn-zoom-out">缩小</button>
+            <button type="button" id="btn-pose-reset">复位入场</button>
+          </div>
+          <div class="actions pose-nudge">
+            <button type="button" data-nudge="0,-28">上移</button>
+            <button type="button" data-nudge="-28,0">左移</button>
+            <button type="button" data-nudge="28,0">右移</button>
+            <button type="button" data-nudge="0,28">下移</button>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button id="btn-start" type="button">启动</button>
+          <button id="btn-welcome" type="button" disabled>欢迎播报</button>
+          <button id="btn-interrupt" type="button" disabled>打断</button>
+          <button id="btn-hold" type="button" disabled>按住说话</button>
+        </div>
+
+        <section class="action-panel" aria-label="肢体动作">
+          <h2>肢体动作</h2>
+          <p class="hint">启动后点按钮可单独做动作（不说话）。</p>
+          <div id="action-bar" class="actions action-bar"></div>
+        </section>
+
+        <label class="field">
+          <span>自定义播报</span>
+          <textarea id="input-text" rows="3" placeholder="大家好[action_wave]，欢迎光临。" disabled></textarea>
+        </label>
+        <p class="hint tag-help">
+          把标签写进句子，播报到该处时会做肢体动作（标签本身不朗读）。
+          示例：<code>大家好[action_wave]，欢迎光临。这边请看[action_thumbup]。</code>
+          可用：挥手、点赞、比心；当前形象没有点头、鼓掌。
+        </p>
+        <div class="actions">
+          <button id="btn-send" type="button" disabled>发送播报</button>
+          <button id="btn-tag-example" type="button" disabled>播报标签示例</button>
+        </div>
+
+        <section class="action-panel" aria-label="模拟流式">
+          <h2>模拟流式（不调大模型）</h2>
+          <p class="hint">假的分片到达，凑成整句再播报，用来看流式口型和字幕。</p>
+          <div id="mock-stream-bar" class="actions"></div>
+        </section>
+
+        <section class="stream-panel" aria-label="流式文字">
+          <h2>播报文本</h2>
+          <p id="broadcast-text" class="stream-text"></p>
+          <h2>你说了</h2>
+          <p id="asr-text" class="stream-text asr"></p>
+        </section>
+      </aside>
+    </main>
+
+    <div id="resume-overlay" class="resume-overlay" hidden>
+      <p>浏览器拦截了自动播放，请点击后恢复声音。</p>
+      <button id="btn-resume" type="button">恢复声音</button>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
